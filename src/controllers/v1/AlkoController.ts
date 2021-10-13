@@ -2,7 +2,7 @@ import { Controller, Get, QueryParams } from '@tsed/common'
 import { Product } from 'src/models/ProductModel'
 import { AlkoService } from 'src/services/AlkoService'
 
-@Controller('/alko')
+@Controller('/')
 export class AlkoController {
     constructor(private readonly service: AlkoService) {}
     

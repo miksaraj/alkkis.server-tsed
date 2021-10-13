@@ -23,11 +23,11 @@ import { IndexCtrl } from "./controllers/pages/IndexController";
     }
   ],
   acceptMimes: ["application/json"],
-  httpPort: process.env.PORT || 8083,
+  httpPort: process.env.PORT || 3000,
   httpsPort: false, // CHANGE
   mount: {
-    "/v1/": `${rootDir}/controllers/v1/*.ts`,
-    "/": `${rootDir}/controllers/*.ts`,
+    "/api/v1/": `${rootDir}/controllers/v1/*.ts`,
+    "/api/": `${rootDir}/controllers/*.ts`,
     "/doc/": {
       IndexCtrl
     }
