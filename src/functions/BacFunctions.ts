@@ -8,6 +8,10 @@ const ALCOHOL_METABOLISM_RATE = 0.017
 const GENDER_MULTIPLIER_MALE = 0.68
 const GENDER_MULTIPLIER_FEMALE = 0.55
 
+export interface BacRepresentation {
+    text: string
+}
+
 function sanitizeBottleSize(bottleSize: string): number {
     return parseFloat(
         bottleSize.replace(',', '.').substr(0, bottleSize.indexOf(' '))
@@ -77,6 +81,8 @@ function getIntoxicationLevelDescription(bac: number): string {
     else return 'Onneksi olkoon! Kuolit'
 }
 
-export function getBacRepresentation(bac: number): string {
-    return fixBac(bac) + ' - ' + getIntoxicationLevelDescription(bac)
+export function getBacRepresentation(bac: number): BacRepresentation {
+    return {
+        text: fixBac(bac) + ' - ' + getIntoxicationLevelDescription(bac)
+    }
 }
