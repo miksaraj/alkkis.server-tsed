@@ -7,7 +7,7 @@ export class Product{
     _id: string
 
     @Required()
-    num: string
+    num: number
 
     @Required()
     name: string
@@ -16,35 +16,41 @@ export class Product{
     maker: string
 
     @Required()
-    bottlesize: string
+    bottleSize: string
 
     @Required()
     price: number
 
     @Required()
-    litreprice: number
+    litrePrice: number
 
     @Required()
     type: string
 
     @Property()
-    subtype: string
+    subtype?: string
+
+    @Property()
+    beerType?: string
 
     @Property()
     country: string
 
     @Property()
-    area: string
-    
+    area?: string
+
     @Property()
     year?: string
 
     @Property()
-    character: string
+    character?: string
 
     @Required()
-    alkopros: number
+    alcoholPercentage: number
 
     @Property()
     energy: number
+
+    @Property()
+    alkoLink: string
 }

@@ -1,16 +1,13 @@
-import { Product } from 'src/models/ProductModel'
-import { Drinker, Gender } from 'src/interfaces/DrinkerInterface'
-
-const ALCOHOL_TO_GRAMS_MULTIPLIER = 0.7892
-
-const ALCOHOL_METABOLISM_RATE = 0.017
-
-const GENDER_MULTIPLIER_MALE = 0.68
-const GENDER_MULTIPLIER_FEMALE = 0.55
-
-export interface BacRepresentation {
-    text: string
-}
+import {
+    AlcoholMetabolismRate,
+    AlcoholToGramsMultiplier,
+    BacRepresentation,
+    BacRequestDto,
+    BacValue,
+    Gender,
+    GenderMultiplier,
+    Product
+} from 'src/alkkis'
 
 function sanitizeBottleSize(bottleSize: string): number {
     return parseFloat(
@@ -18,12 +15,12 @@ function sanitizeBottleSize(bottleSize: string): number {
         ) * 1000
 }
 
-function getGenderMultiplier(gender: Gender): number {
-    return gender === Gender.Male ? GENDER_MULTIPLIER_MALE : GENDER_MULTIPLIER_FEMALE
+function getGenderMultiplier(gender: Gender): GenderMultiplier {
+    return gender === Gender.Male ? GenderMultiplier.Male : GenderMultiplier.Female
 }
 
 /**
- * 
+ *
  * @param amountInMillilitres   Beverage container size in ml
  * @param alcoholPercentage     Ethyl alcohol percentage as float
  * @returns Alcohol ethyl content in grams
@@ -32,44 +29,42 @@ function getAlcoholContentInGrams(
     amountInMillilitres: number,
     alcoholPercentage: number
     ): number {
-        return amountInMillilitres * (alcoholPercentage / 100) * ALCOHOL_TO_GRAMS_MULTIPLIER
+        return amountInMillilitres * (alcoholPercentage / 100) * AlcoholToGramsMultiplier
     }
 
 function calculateTotalAlcoholContent(products: Product[]): number {
     let alcoholContent = 0.0
     products.forEach(product => {
         alcoholContent += getAlcoholContentInGrams(
-            sanitizeBottleSize(product.bottlesize),
-            product.alkopros
+            sanitizeBottleSize(product.bottleSize),
+            product.alcoholPercentage
         )
     })
     return alcoholContent
 }
-
 /**
- * 
- * @param products 
- * @param drinker 
+ *
+ * @param request object containing products array and drinker object
  * @returns blood alcohol content as float
  */
-export function calculateBac(products: Product[], drinker: Drinker): number {
+export function calculateBac(request: BacRequestDto): BacValue {
     return ((
-        calculateTotalAlcoholContent(products) / (
-            (drinker.weight * 1000) * getGenderMultiplier(drinker.gender)
+        calculateTotalAlcoholContent(request.products) / (
+            (request.drinker.weight * 1000) * getGenderMultiplier(request.drinker.gender)
         )
-    ) * 100 ) - (drinker.time * ALCOHOL_METABOLISM_RATE)
+    ) * 100 ) - (request.drinker.time * AlcoholMetabolismRate)
 }
 
 /**
- * 
+ *
  * @param bac blood alcohol content as float
- * @returns blood alcohol content as string represting float to precision of 2
+ * @returns blood alcohol content as string representing float to precision of 2
  */
-function fixBac(bac: number): string {
-    return ((bac > 0) ? (bac * 10).toPrecision(2) : '0') + '‰' 
+function fixBac(bac: BacValue): string {
+    return ((bac > 0) ? (bac * 10).toPrecision(2) : '0') + '‰'
 }
 
-function getIntoxicationLevelDescription(bac: number): string {
+function getIntoxicationLevelDescription(bac: BacValue): string {
     if (bac <= 0.02) return 'Juo ny jottai ees...'
     else if (bac <= 0.03) return 'Hieman hiprakassa'
     else if (bac <= 0.06) return 'Nyt on hyvä känni!'
@@ -81,7 +76,7 @@ function getIntoxicationLevelDescription(bac: number): string {
     else return 'Onneksi olkoon! Kuolit'
 }
 
-export function getBacRepresentation(bac: number): BacRepresentation {
+export function getBacRepresentation(bac: BacValue): BacRepresentation {
     return {
         text: fixBac(bac) + ' - ' + getIntoxicationLevelDescription(bac)
     }
