@@ -1,5 +1,5 @@
 import { Controller, Post, BodyParams } from '@tsed/common'
-import { BacRequestDto, BacRepresentation } from 'src/alkkis'
+import { BacRequestDto, BacRepresentation } from 'src/alkkis.types'
 import { BacService } from 'src/services/BacService'
 
 @Controller('/bac')

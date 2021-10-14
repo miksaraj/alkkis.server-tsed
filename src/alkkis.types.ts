@@ -2,9 +2,9 @@
 // Project: https://github.com/miksaraj/alkkis.*
 // Definitions by: Mikko Rajakangas <https://github.com/miksaraj>
 
-export const AlcoholMetabolismRate: 0.017
+export const AlcoholMetabolismRate = 0.017
 
-export const AlcoholToGramsMultiplier: 0.7892
+export const AlcoholToGramsMultiplier = 0.7892
 
 export type BacValue = number
 
@@ -57,15 +57,3 @@ export interface BacRequestDto {
     products: Product[],
     drinker: Drinker
 }
-
-export function calculateTotalAlcoholContent(products: Product[]): number
-export function sanitizeBottleSize(value: string): number
-export function getAlcoholContentInGrams(qty: number, alcoholPercentage: number): number
-
-export function getGenderMultiplier(gender: Gender): GenderMultiplier
-
-export function getBacRepresentation(value: BacValue): BacRepresentation
-export function fixBac(value: BacValue): string
-export function getIntoxicationLevelDescription(value: BacValue): string
-
-export function calculateBac(request: BacRequestDto): BacValue

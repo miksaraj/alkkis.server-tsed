@@ -7,7 +7,7 @@ import {
     Gender,
     GenderMultiplier,
     Product
-} from 'src/alkkis'
+} from 'src/alkkis.types'
 
 function sanitizeBottleSize(bottleSize: string): number {
     return parseFloat(
